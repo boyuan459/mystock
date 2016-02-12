@@ -88,9 +88,39 @@ angular.module('mystock.services', [])
         
         $http.get(url)
             .success(function(json) {
-                console.log(json);
-                var jsonData = json;
-                deferred.resolve(jsonData);
+                // console.log(json);
+                var jsonData = json.query.results.quote;
+                
+                var priceData = [],
+                volumeData = [];
+                
+                jsonData.forEach(function(dayDataObject) {
+                    var dateToMillis = dayDataObject.Date,
+                    date = Date.parse(dateToMillis),
+                    price = parseFloat(Math.round(dayDataObject.Close * 100) / 100).toFixed(3),
+                    volume = dayDataObject.Volume,
+                    
+                    volumeDatum = '[' + date + ',' + volume + ']',
+                    priceDatum = '[' + date + ',' + price + ']';
+                    
+                    // console.log(volumeDatum, priceDatum);
+                    
+                    volumeData.unshift(volumeDatum);
+                    priceData.unshift(priceDatum);
+                });
+                
+                var formattedChartData = 
+                '[{' + 
+                    '"key":' + '"volume",' +
+                    '"bar":' + 'true,' +
+                    '"values":' + '[' + volumeData + ']' +
+                 '},' + 
+                 '{' + 
+                    '"key":' + '"' + ticker + '",' +
+                    '"values":' + '[' + priceData + ']' +
+                  '}]';
+                
+                deferred.resolve(formattedChartData);
             })
             .error(function(error) {
                 console.log("Chart data error: " + error);
