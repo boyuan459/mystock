@@ -60,7 +60,7 @@ angular.module('mystock.controllers', [])
 .controller('MyStockCtrl', ['$scope', '$stateParams', 'stockDataService', 'dateService', function($scope, $stateParams, stockDataService, dateService) {
     
     $scope.ticker = $stateParams.stockTicker;
-    $scope.chartView = 1;
+    $scope.chartView = 4;
     
     console.log(dateService.currentDate());
     console.log(dateService.oneYearAgoDate());
