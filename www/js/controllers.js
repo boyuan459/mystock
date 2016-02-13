@@ -57,7 +57,7 @@ angular.module('mystock.controllers', [])
     
 }])
 
-.controller('MyStockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup', 'stockDataService', 'dateService', 'chartDataService', 'notesService', function($scope, $stateParams, $window, $ionicPopup, stockDataService, dateService, chartDataService, notesService) {
+.controller('MyStockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup', 'stockDataService', 'dateService', 'chartDataService', 'notesService', 'newsService', function($scope, $stateParams, $window, $ionicPopup, stockDataService, dateService, chartDataService, notesService, newsService) {
     
     $scope.ticker = $stateParams.stockTicker;
     $scope.chartView = 4;
@@ -68,8 +68,14 @@ angular.module('mystock.controllers', [])
         getPriceData();
         getDetailsData();
         getChartData();
+        getNews();
         $scope.stockNotes = notesService.getNotes($scope.ticker);
     });
+    
+    $scope.openWindow = function(link) {
+        //todo install and setup inAppBrowser
+        console.log("Open window: " + link);
+    };
     
     $scope.chartViewFunc = function(n) {
         $scope.chartView = n;
@@ -189,6 +195,16 @@ angular.module('mystock.controllers', [])
         });
     }
     
+    function getNews() {
+        
+        $scope.newsStories = [];
+        
+        var promise = newsService.getNews($scope.ticker);
+        
+        promise.then(function(data) {
+            $scope.newsStories = data;
+        });
+    }
 
 	var xTickFormat = function(d) {
 		var dx = $scope.myData[0].values[d] && $scope.myData[0].values[d].x || 0;
