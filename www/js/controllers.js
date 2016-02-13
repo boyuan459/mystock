@@ -79,6 +79,12 @@ angular.module('mystock.controllers', [])
         promise.then(function(data) {
             // console.log(data);
             $scope.stockPriceData = data;
+            
+            if (data !== null && data.chg_percent >= 0) {
+                $scope.reactiveColor = {'background-color': '#33cd5f'};
+            } else if (data !== null && data.chg_percent < 0) {
+                $scope.reactiveColor = {'background-color': '#ef473a'};
+            }
         });
     }
     
@@ -142,7 +148,7 @@ angular.module('mystock.controllers', [])
     $scope.chartOptions = {
         chartType: 'linePlusBarWithFocusChart',
         data: 'myData',
-        margin: { top: 15, right: 75, bottom: marginBottom, left: 70 },
+        margin: { top: 15, right: 0, bottom: marginBottom, left: 0 },
         interpolate: "cardinal",
         useInteractiveGuideline: false,
         yShowMaxMin: false,
@@ -156,7 +162,10 @@ angular.module('mystock.controllers', [])
         y2AxisTickFormat: y2TickFormat,
         y3AxisTickFormat: y3TickFormat,
         y4AxisTickFormat: y4TickFormat,
-        transitionDuration: 500
+        transitionDuration: 500,
+        y1AxisLabel: 'Price',
+        y3AxisLabel: 'Volume',
+        noData: 'Loading data...'
     };
 
 
