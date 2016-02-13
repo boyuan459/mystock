@@ -41,28 +41,32 @@ angular.module('mystock.controllers', [])
   };
 })
 
-.controller('MyStocksCtrl', ['$scope', function($scope) {
+.controller('MyStocksCtrl', ['$scope', 'myStocksArrayService', function($scope, myStocksArrayService) {
   
-    $scope.myStocks = [
-        {ticker: "AAPL"},
-        {ticker: "FB"},
-        {ticker: "NFLX"},
-        {ticker: "TSLA"},
-        {ticker: "BRK-A"},
-        {ticker: "INTC"},
-        {ticker: "MSFT"},
-        {ticker: "GE"},
-        {ticker: "BAC"}
-    ];
+    // $scope.myStocks = [
+    //     {ticker: "AAPL"},
+    //     {ticker: "FB"},
+    //     {ticker: "NFLX"},
+    //     {ticker: "TSLA"},
+    //     {ticker: "BRK-A"},
+    //     {ticker: "INTC"},
+    //     {ticker: "MSFT"},
+    //     {ticker: "GE"},
+    //     {ticker: "BAC"}
+    // ];
+    
+    $scope.myStocks = myStocksArrayService;
+    console.log(myStocksArrayService);
     
 }])
 
-.controller('MyStockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup', 'stockDataService', 'dateService', 'chartDataService', 'notesService', 'newsService', function($scope, $stateParams, $window, $ionicPopup, stockDataService, dateService, chartDataService, notesService, newsService) {
+.controller('MyStockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup', 'stockDataService', 'dateService', 'chartDataService', 'notesService', 'newsService', 'followStockService', function($scope, $stateParams, $window, $ionicPopup, stockDataService, dateService, chartDataService, notesService, newsService, followStockService) {
     
     $scope.ticker = $stateParams.stockTicker;
     $scope.chartView = 4;
     $scope.oneYearAgoDate = dateService.oneYearAgoDate();
     $scope.currentDate = dateService.currentDate();
+    $scope.following = followStockService.checkFollowing($scope.ticker);
     
     $scope.$on("$ionicView.afterEnter", function() {
         getPriceData();
@@ -71,6 +75,16 @@ angular.module('mystock.controllers', [])
         getNews();
         $scope.stockNotes = notesService.getNotes($scope.ticker);
     });
+    
+    $scope.toggleFollow = function() {
+        if ($scope.following) {
+            followStockService.unfollow($scope.ticker);
+            $scope.following = false;
+        } else {
+            followStockService.follow($scope.ticker);
+            $scope.following = true;
+        }
+    };
     
     $scope.openWindow = function(link) {
         //todo install and setup inAppBrowser
@@ -167,9 +181,9 @@ angular.module('mystock.controllers', [])
             $scope.stockPriceData = data;
             
             if (data !== null && data.chg_percent >= 0) {
-                $scope.reactiveColor = {'background-color': '#33cd5f'};
+                $scope.reactiveColor = {'background-color': '#33cd5f', 'border-color': 'rgba(255,255,255,.3)'};
             } else if (data !== null && data.chg_percent < 0) {
-                $scope.reactiveColor = {'background-color': '#ef473a'};
+                $scope.reactiveColor = {'background-color': '#ef473a', 'border-color': 'rgba(0, 0, 0, .2)'};
             }
         });
     }
