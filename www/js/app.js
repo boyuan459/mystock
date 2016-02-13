@@ -1,5 +1,6 @@
 angular.module('mystock', [
     'ionic', 
+    'angular-cache',
     'nvd3',
     'nvChart',
     'mystock.controllers',
