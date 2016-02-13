@@ -1,5 +1,18 @@
 /* Add your own CSS if you like */
 
+/*Search*/
+#search {
+    background-color: rgba(20, 20, 20, 0.975);
+}
+
+#search .search-input {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+#search input {
+    color: #fff;
+}
+
 /*Stock news card*/
 #stock-news .icon {
     color: #ccc;
@@ -221,6 +234,31 @@
 
 .no-margin {
     margin: 0 !important;
+}
+
+.font-normal {
+    font-weight: normal !important;
+}
+
+.border-none {
+    border: none !important;
+}
+
+.margin-auto,
+.margin-auto svg {
+    margin: auto !important;
+}
+
+.text-align-center {
+    text-align: center !important;
+}
+
+.text-uppercase {
+    text-transform: uppercase !important;
+}
+
+.text-capitalize {
+    text-transform: capitalize !important;
 }
 
 /*Adjustment Styles*/
