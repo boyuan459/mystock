@@ -1,5 +1,6 @@
 angular.module('mystock', [
     'ionic', 
+    'ngCordova',
     'firebase',
     'angular-cache',
     'nvd3',
@@ -21,7 +22,8 @@ angular.module('mystock', [
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
-      StatusBar.styleDefault();
+    //   StatusBar.styleDefault();
+        StatusBar.styleHex('#ffffff');
     }
   });
 })
