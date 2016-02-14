@@ -1,9 +1,4 @@
 ![alt text](https://pbs.twimg.com/profile_images/638749746467766272/6YT2b9io_bigger.png "stockMarketApp")
-### stockMarketApp
-
-#####Source code from [Rapid Prototyping with Ionic: Build a Data-Driven Mobile App](https://www.udemy.com/learn-ionic-framework-build-a-stock-market-mobile-app/)
-
---
 
 Copyright (c) 2016 Hunter Leaman
 
