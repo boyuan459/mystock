@@ -6,6 +6,7 @@
   },
   "dependencies": {
     "angular-cache": "^4.5.0",
-    "angular-x2js": "^0.2.0"
+    "angular-x2js": "^0.2.0",
+    "angularfire": "^1.1.3"
   }
 }
