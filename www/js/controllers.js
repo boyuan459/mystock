@@ -92,7 +92,7 @@ angular.module('mystock.controllers', [])
     
 }])
 
-.controller('MyStockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup', '$cordovaInAppBrowser', 'stockDataService', 'dateService', 'chartDataService', 'notesService', 'newsService', 'followStockService', function($scope, $stateParams, $window, $ionicPopup, $cordovaInAppBrowser, stockDataService, dateService, chartDataService, notesService, newsService, followStockService) {
+.controller('MyStockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup', '$cordovaInAppBrowser', 'stockDataService', 'dateService', 'chartDataCacheService', 'chartDataService', 'notesService', 'newsService', 'followStockService', function($scope, $stateParams, $window, $ionicPopup, $cordovaInAppBrowser, stockDataService, dateService, chartDataCacheService, chartDataService, notesService, newsService, followStockService) {
     
     $scope.ticker = $stateParams.stockTicker;
     $scope.chartView = 4;
@@ -131,6 +131,17 @@ angular.module('mystock.controllers', [])
     
     $scope.chartViewFunc = function(n) {
         $scope.chartView = n;
+        if ($scope.chartView == 3) {
+            $scope.oneYearAgoDate = dateService.threeMonthAgoDate();
+            // chartDataCacheService.remove($scope.ticker);
+            getChartData();
+        } else if ($scope.chartView == 4) {
+            $scope.oneYearAgoDate = dateService.oneYearAgoDate();
+            // chartDataCacheService.remove($scope.ticker);
+            getChartData();
+        }
+        
+        // console.log($scope.oneYearAgoDate);
     };
     
     $scope.addNote = function() {
@@ -261,7 +272,7 @@ angular.module('mystock.controllers', [])
 	var xTickFormat = function(d) {
 		var dx = $scope.myData[0].values[d] && $scope.myData[0].values[d].x || 0;
 		if (dx > 0) {
-      return d3.time.format("%b %d")(new Date(dx));
+            return d3.time.format("%b %d")(new Date(dx));
 		}
 		return null;
 	};

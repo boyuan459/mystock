@@ -27,9 +27,17 @@ angular.module('mystock.services', [])
         return date;
     };
     
+    var threeMonthAgoDate = function() {
+        var d = new Date(new Date().setDate(new Date().getDate() - 91));
+        var date = $filter('date')(d, 'yyyy-MM-dd');  
+        
+        return date; 
+    };
+    
     return {
         currentDate: currentDate,
-        oneYearAgoDate: oneYearAgoDate
+        oneYearAgoDate: oneYearAgoDate,
+        threeMonthAgoDate: threeMonthAgoDate
     };
 })
 
@@ -306,7 +314,8 @@ angular.module('mystock.services', [])
     var getHistoricalData = function(ticker, fromDate, toDate) {
         
         var deferred = $q.defer(),
-        cacheKey = ticker,
+        cacheKey = ticker + fromDate,
+        
         chartDataCache = chartDataCacheService.get(cacheKey),
         
         query = 'select * from yahoo.finance.historicaldata where symbol = "' + ticker + '" and startDate = "' + fromDate + '" and endDate = "'+ toDate + '"',
