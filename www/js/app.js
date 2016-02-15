@@ -1,5 +1,6 @@
 angular.module('mystock', [
     'ionic','ionic.service.core', 
+    'ionic.service.analytics',
     'ngCordova',
     'firebase',
     'angular-cache',
@@ -11,8 +12,9 @@ angular.module('mystock', [
     'mystock.filters',
     'mystock.directives'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $ionicAnalytics) {
   $ionicPlatform.ready(function() {
+        
     //ionic deploy https://github.com/ace68723/ionic-plugin-deploy fix build error
     var deploy = new Ionic.Deploy();
     deploy.watch().then(function noop() {
@@ -37,6 +39,8 @@ angular.module('mystock', [
             });
         }
     });
+    
+    $ionicAnalytics.register();
     
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
