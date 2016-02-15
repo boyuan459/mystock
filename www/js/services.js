@@ -165,12 +165,27 @@ angular.module('mystock.services', [])
         firebaseUserRef.child(getUser().uid).child('stocks').set(stocks);
     };
     
+    var registerUser = function() {
+        //kick off the platform web client
+        Ionic.io();
+        
+        //this will give you a fresh user or the previously saved current user
+        var user = Ionic.User.current();
+        
+        //if the user doesn't have an id, you'll give it one
+        if (!user.id) {
+            user.id = self.currentUser.userId;
+            user.set('email', self.currentUser.email);
+        }
+    };
+    
     var getUser = function() {
         return firebaseRef.getAuth();   //provide user signing info
     };
     
     if (getUser()) {
         $rootScope.currentUser = getUser();
+        console.log($rootScope.currentUser);
     }
     
     return {
