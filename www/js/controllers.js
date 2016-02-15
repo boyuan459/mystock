@@ -131,15 +131,15 @@ angular.module('mystock.controllers', [])
     
     $scope.chartViewFunc = function(n) {
         $scope.chartView = n;
-        if ($scope.chartView == 3) {
-            $scope.oneYearAgoDate = dateService.threeMonthAgoDate();
-            // chartDataCacheService.remove($scope.ticker);
-            getChartData();
-        } else if ($scope.chartView == 4) {
-            $scope.oneYearAgoDate = dateService.oneYearAgoDate();
-            // chartDataCacheService.remove($scope.ticker);
-            getChartData();
-        }
+        // if ($scope.chartView == 3) {
+        //     $scope.oneYearAgoDate = dateService.threeMonthAgoDate();
+        //     // chartDataCacheService.remove($scope.ticker);
+        //     getChartData();
+        // } else if ($scope.chartView == 4) {
+        //     $scope.oneYearAgoDate = dateService.oneYearAgoDate();
+        //     // chartDataCacheService.remove($scope.ticker);
+        //     getChartData();
+        // }
         
         // console.log($scope.oneYearAgoDate);
     };

@@ -314,7 +314,8 @@ angular.module('mystock.services', [])
     var getHistoricalData = function(ticker, fromDate, toDate) {
         
         var deferred = $q.defer(),
-        cacheKey = ticker + fromDate,
+        // cacheKey = ticker + fromDate,
+        cacheKey = ticker,
         
         chartDataCache = chartDataCacheService.get(cacheKey),
         
