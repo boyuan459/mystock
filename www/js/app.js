@@ -13,6 +13,31 @@ angular.module('mystock', [
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
+    //ionic deploy https://github.com/ace68723/ionic-plugin-deploy fix build error
+    var deploy = new Ionic.Deploy();
+    deploy.watch().then(function noop() {
+        
+    }, function noop() {
+        
+    }, function hasUpdate(hasUpdate) {
+        console.log("Has Update ", hasUpdate);
+        if (hasUpdate) {
+            console.log("Calling ionicDeploy.update()");
+            deploy.update().then(function(deployResult) {
+                //deployResult will be true when successful and false otherwise
+            }, function(deployUpdateError) {
+                //fired if we're unable to check for updates of
+                //if any errors have occured
+                console.log("Ionic Deploy: Update error! ", deployUpdateError);
+            }, function(deployProgress) {
+                //this is a progress callback, so it will be called a lot
+                //deployProgress will be an Integer representing the current
+                //completion percentage.
+                console.log('Ionic Deploy: Progress... ', deployProgress);
+            });
+        }
+    });
+    
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
