@@ -65,7 +65,8 @@ angular.module('mystock.services', [])
             if (error) {
                 console.log("Login Failed!", error);
             } else {
-                $rootScope.currentUser = user;
+                $rootScope.currentUser = authData;
+                registerUser(); //for ionic user register
                 
                 if (signup) {
                     modalService.closeModal();
@@ -174,9 +175,15 @@ angular.module('mystock.services', [])
         
         //if the user doesn't have an id, you'll give it one
         if (!user.id) {
-            user.id = self.currentUser.userId;
-            user.set('email', self.currentUser.email);
+            user.id = $rootScope.currentUser.uid;
+            user.set('email', $rootScope.currentUser.password.email);
+            user.set('image', $rootScope.currentUser.password.profileImageURL);
         }
+        
+        console.log(user);
+        
+        //persist the user
+        user.save();
     };
     
     var getUser = function() {
@@ -185,7 +192,6 @@ angular.module('mystock.services', [])
     
     if (getUser()) {
         $rootScope.currentUser = getUser();
-        console.log($rootScope.currentUser);
     }
     
     return {

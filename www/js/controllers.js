@@ -69,7 +69,7 @@ angular.module('mystock.controllers', [])
     });
     
     $scope.getMyStocksData = function() {
-        
+     
         myStocksArrayService.forEach(function(stock) {
             
             var promise = stockDataService.getPriceData(stock.ticker);
