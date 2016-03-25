@@ -7,7 +7,15 @@
   </ion-nav-buttons>
  
   <ion-content>
-   
+   <!-- Search Input Control -->
+    <div class="bar bar-header item-input-inset">
+        <label class="item-input-wrapper">
+            <i class="icon ion-ios-search placeholder-icon"></i >
+				<input type="search"
+				       ng-model="search.name"
+				       placeholder="Search" >
+		</label >
+    </div >
     <ion-refresher
         pulling-text="Pull to refresh..."
         on-refresh="getMyStocksData()" 
@@ -16,10 +24,10 @@
       
     <ion-list>
       <ion-item 
-        ng-repeat="stock in myStocksData | orderBy:'-chg_percent'" 
+        ng-repeat="stock in myStocksData | filter:search | orderBy:'-chg_percent'" 
         ion-track-tap="Select Stock"
         ion-track-data="stock"
-        ng-href="#/app/{{stock.symbol}}">
+        ui-sref="app.mystock({'stockTicker':stock.symbol})">
         <div class="row row-center">
             <div class="col stock-ticker-name">
                 <h3>{{stock.symbol}}</h3>
