@@ -1,5 +1,6 @@
 angular.module('mystock', [
-    'ionic','ionic.service.core', 
+    'ionic',
+    'ionic.service.core', 
     'ionic.service.analytics',
     'ngCordova',
     'firebase',
@@ -13,9 +14,11 @@ angular.module('mystock', [
     'mystock.directives'])
 
 .run(function($ionicPlatform, $ionicAnalytics) {
+// .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
         
     //ionic deploy https://github.com/ace68723/ionic-plugin-deploy fix build error
+    //comment out in dev
     var deploy = new Ionic.Deploy();
     deploy.watch().then(function noop() {
         
@@ -39,7 +42,7 @@ angular.module('mystock', [
             });
         }
     });
-    
+   
     $ionicAnalytics.register();
     
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
@@ -55,6 +58,12 @@ angular.module('mystock', [
         StatusBar.styleHex('#ffffff');
     }
   });
+})
+
+.constant('FACEBOOK_APP_ID', '456655851198096')
+
+.config(function ($stateProvider, $urlRouterProvider, FACEBOOK_APP_ID) {
+	openFB.init({appId: FACEBOOK_APP_ID});
 })
 
 .config(function($stateProvider, $urlRouterProvider) {

@@ -9,7 +9,8 @@ angular.module('mystock.controllers', [])
   };
 }])
 
-.controller('LoginSignupCtrl', ['$scope', 'modalService', 'userService', function($scope, modalService, userService) {
+.controller('LoginSignupCtrl', ['$scope', '$timeout', '$window', 'modalService', 'userService', function($scope, $timeout, $window, modalService, userService) {
+    $scope.loggingIn = false;
     
     $scope.user = {email: '', password: ''};
     
@@ -23,6 +24,21 @@ angular.module('mystock.controllers', [])
     
     $scope.login = function(user) {
         userService.login(user);
+    };
+    
+    $scope.loginWithFacebook = function() {
+        if (!$scope.loggingIn) {
+            $scope.loggingIn = true;
+            userService.loginWithFacebook().then(function(data) {
+                $scope.loggingIn = false;
+                // modalService.closeModal();
+                console.log(data);
+                $timeout(function() {
+                    $window.location.reload(true);
+                }, 400);
+                                                
+            });
+        }
     };
 }])
 
