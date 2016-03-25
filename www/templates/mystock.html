@@ -88,6 +88,10 @@
         </div>
     </div>
     
+    <div ng-show="currentUser" class="row">
+        <button ui-sref="app.chatroom({'stockTicker':ticker})" class="class button button-block icon-right ion-chevron-right button-calm">Enter Stock Chatroom</button>
+    </div>
+    
     <div class="card" id="stock-notes">
         <div class="item item-divider">Notes <span ng-click="addNote()" class="add-stock-note">Add <i class="icon ion-ios-plus"></i></span></div>
         <a class="item" ng-repeat="note in stockNotes track by $index" ng-click="openNote($index, note.title, note.body)">

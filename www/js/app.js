@@ -5,6 +5,7 @@ angular.module('mystock', [
     'ngCordova',
     'firebase',
     'angular-cache',
+    'angularMoment',
     'nvd3',
     'nvChart',
     'cb.x2js',
@@ -92,6 +93,17 @@ angular.module('mystock', [
               'menuContent': {
                   templateUrl: 'templates/mystock.html',
                   controller: 'MyStockCtrl'
+              }
+          }
+      })
+      
+      .state('app.chatroom', {
+          url: '/chatroom/:stockTicker',
+          cache: false,
+          views: {
+              'menuContent': {
+                  templateUrl: 'templates/chatroom.html',
+                  controller: 'ChatroomCtrl'
               }
           }
       });
