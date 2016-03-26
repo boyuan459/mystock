@@ -110,3 +110,5 @@ angular.module('mystock', [
   // if none of the above states are matched, use this as the fallback
   $urlRouterProvider.otherwise('/app/mystocks');
 });
+
+//adb shell screencap -p | perl -pe 's/\x0D\x0A/\x0A/g' > screen1.png
