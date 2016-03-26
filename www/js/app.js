@@ -1,4 +1,5 @@
 angular.module('mystock', [
+    'ngIOS9UIWebViewPatch',
     'ionic',
     'ionic.service.core', 
     'ionic.service.analytics',
