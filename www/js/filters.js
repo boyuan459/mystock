@@ -1,5 +1,15 @@
 angular.module('mystock.filters', [])
 
+.filter('sortByTicker', function() {
+  return function(input) {
+	  if (input) {
+			return _.sortBy(_.values(input), 'ticker');
+	  } else {
+		  return []
+	  }
+  };
+})
+
 .filter('characters', function () {
   return function (input, chars, breakOnWord, ellipsis) {
     if (isNaN(chars)) return input;

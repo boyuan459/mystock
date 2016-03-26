@@ -1,14 +1,11 @@
 <ion-view title="<div><i class='icon ion-chatbubble user-messages-top-icon'></i> {{ticker}}</div>"
-          class="show" >
-    <ion-nav-bar class="bar-balanced">
-        <ion-nav-back-button></ion-nav-back-button>
-    </ion-nav-bar>
+          class="bar-balanced" >
     
 	<ion-nav-buttons side="secondary" >
 		<button class="button button-clear"
-		        ng-click="user.toggleFavorite(show)" >
+		        ng-click="user.toggleFavorite(ticker)" >
 			<i class="ion-heart"
-			   ng-class="{'assertive':user.current.favorites[show.showid]}" ></i >
+			   ng-class="{'assertive':user.currentNode.favorites[ticker]}" ></i >
 		</button >
 	</ion-nav-buttons >
 

@@ -1,6 +1,13 @@
 angular.module('mystock.controllers', [])
 
-.controller('AppCtrl', ['$scope', 'modalService', 'userService', function($scope, modalService, userService) {
+.controller('AppCtrl', ['$scope', '$ionicSideMenuDelegate', 'modalService', 'userService', function($scope, $ionicSideMenuDelegate, modalService, userService) {
+
+  $scope.user = userService;
+  
+  $scope.toggleLeftSideMenu = function() {
+      $scope.user.getCurrentNode();
+      $ionicSideMenuDelegate.toggleLeft();
+  };
 
   $scope.modalService = modalService;
   
@@ -112,6 +119,12 @@ angular.module('mystock.controllers', [])
     
     $scope.user = userService;
     console.log($rootScope.currentUser);
+    $scope.user.getCurrentNode();
+    // $scope.user.getCurrentNode().then(function(data) {
+    //     console.log(data);
+    //     $scope.user.currentNode = data;
+    // });
+    
     
     $scope.user.current = $rootScope.currentUser.facebook || $rootScope.currentUser.password;
     $scope.user.current.userId = $rootScope.currentUser.uid;

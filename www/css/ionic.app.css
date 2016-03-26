@@ -9722,7 +9722,7 @@ a.button {
   transition-duration: 0s; }
 
 .show {
-  background-color: #f8f8f8; }
+  background-color: #33cd5f; }
   .show .loading {
     text-align: center;
     padding: 20px 0; }
@@ -9802,3 +9802,7 @@ a.button {
 
 .margin-auto svg {
   margin: auto !important; }
+
+.reactiveColor {
+  background-color: #33cd5f;
+  border-color: rgba(255, 255, 255, 0.3); }

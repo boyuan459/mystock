@@ -72,9 +72,24 @@ angular.module('mystock.services', [])
     return userRef;
 })
 
-.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPopup, $firebaseAuth, $firebaseObject, firebaseRef, firebaseUserRef, modalService, myStocksArrayService, notesCacheService, myStocksCacheService) {
+.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPopup, $firebaseAuth, $firebaseObject, $state, firebaseRef, firebaseUserRef, modalService, myStocksArrayService, notesCacheService, myStocksCacheService) {
     
-    var loginWithFackbook = function() {
+    var self = {
+    current: {},
+    currentNode: {},
+    toggleFavorite: function(ticker) {
+        if (!self.currentNode.favorites) {
+            self.currentNode.favorites = {};
+        }
+        if (self.currentNode.favorites[ticker]) {
+            self.currentNode.favorites[ticker] = null;
+        } else {
+            self.currentNode.favorites[ticker] = ticker;
+        }
+        self.currentNode.$save();
+    },
+    
+    loginWithFacebook: function() {
         console.log('Facebook login');
         var d = $q.defer();
         openFB.login(
@@ -150,15 +165,16 @@ angular.module('mystock.services', [])
                                                 myStocksCacheService.removeAll();
                                                 notesCacheService.removeAll();
                                                     
-                                                loadUserData(authData);
+                                                self.loadUserData(authData);
                                                 modalService.closeModal();
                                                                                       
-                                                self.current = $firebaseObject(firebaseUserRef.child(authData.uid));
-                                                self.current.$loaded(function () {
+                                                // self.currentNode = $firebaseObject(firebaseUserRef.child(authData.uid));
+                                                // self.currentNode.$loaded(function () {
                                                     // When we are sure the object has been completely
                                                     // loaded from firebase then resolve the promise.
-                                                    d.resolve(self.current);
-                                                });
+                                                //     console.log(self.currentNode);
+                                                //     d.resolve(self.currentNode);
+                                                // });
                                             });
                                             
                                 })
@@ -199,7 +215,7 @@ angular.module('mystock.services', [])
                         title: "Facebook Error",
                         template: 'Failed to login with facebook'
                     });
-                    d.reject(error);
+                    d.reject();
                 }
             },
             {
@@ -207,9 +223,9 @@ angular.module('mystock.services', [])
             });
             
             return d.promise;
-    };
+    },
     
-    var login = function (user, signup) {
+    login: function (user, signup) {
         firebaseRef.authWithPassword({
             email: user.email,
             password: user.password
@@ -218,7 +234,10 @@ angular.module('mystock.services', [])
                 console.log("Login Failed!", error);
             } else {
                 $rootScope.currentUser = authData;
-                registerUser(); //for ionic user register
+                self.registerUser(); //for ionic user register
+                // self.currentNode = $firebaseObject(firebaseUserRef.child(authData.uid));
+                // self.currentNode.$loaded();
+                // console.log(self.currentNode);
                 
                 if (signup) {
                     modalService.closeModal();
@@ -226,7 +245,7 @@ angular.module('mystock.services', [])
                     myStocksCacheService.removeAll();
                     notesCacheService.removeAll();
                     
-                    loadUserData(authData);
+                    self.loadUserData(authData);
                     modalService.closeModal();
                     
                     $timeout(function() {
@@ -236,9 +255,9 @@ angular.module('mystock.services', [])
                 // console.log("Authenticated successfully with payload:", authData);
             }
         });
-    };
+    },
     
-    var signup = function(user) {
+    signup: function(user) {
         
         firebaseRef.createUser({
             email: user.email,
@@ -247,7 +266,7 @@ angular.module('mystock.services', [])
             if (error) {
                 console.log("Error creating user:", error);
             } else {
-                login(user, true);
+                self.login(user, true);
                 firebaseRef.child('emails').push(user.email);
                 firebaseUserRef.child(userData.uid).child('stocks').set(myStocksArrayService);
                 // console.log("Successfully created user account with uid: ", userData.uid);
@@ -262,17 +281,18 @@ angular.module('mystock.services', [])
                 });
             }
         });
-    };
+    },
     
-    var logout = function() {
+    logout: function() {
         firebaseRef.unauth();
         notesCacheService.removeAll();
         myStocksCacheService.removeAll();
         $window.location.reload(true);
         $rootScope.currentUser = '';
-    };
+        $state.go('app.mystocks');
+    },
     
-    var loadUserData = function(authData) {
+    loadUserData: function(authData) {
         // console.log(authData.uid);
         firebaseUserRef.child(authData.uid).child('stocks').once('value', function(snapshot) {
             
@@ -305,20 +325,20 @@ angular.module('mystock.services', [])
         }, function(error) {
             console.log('Firebase error -> notes' + error);
         });
-    };
+    },
     
-    var updateNotes = function(ticker, notes) {
-        firebaseUserRef.child(getUser().uid).child('notes').child(ticker).remove();
+    updateNotes: function(ticker, notes) {
+        firebaseUserRef.child(self.getUser().uid).child('notes').child(ticker).remove();
         notes.forEach(function(note) {
-            firebaseUserRef.child(getUser().uid).child('notes').child(note.ticker).push(note);
+            firebaseUserRef.child(self.getUser().uid).child('notes').child(note.ticker).push(note);
         });
-    };
+    },
     
-    var updateStocks = function(stocks) {
-        firebaseUserRef.child(getUser().uid).child('stocks').set(stocks);
-    };
+    updateStocks: function(stocks) {
+        firebaseUserRef.child(self.getUser().uid).child('stocks').set(stocks);
+    },
     
-    var registerUser = function() {
+    registerUser: function() {
         //kick off the platform web client
         Ionic.io();
         
@@ -336,25 +356,34 @@ angular.module('mystock.services', [])
         
         //persist the user
         user.save();
-    };
+    },
     
-    var getUser = function() {
+    getUser: function() {
         return firebaseRef.getAuth();   //provide user signing info
+    },
+    
+    getCurrentNode: function() {
+        var d = $q.defer();
+        var auth = firebaseRef.getAuth();
+        // console.log(auth.uid);
+        if (auth) {
+            self.currentNode = $firebaseObject(firebaseUserRef.child(auth.uid));
+            self.currentNode.$loaded(function() {
+                d.resolve(self.currentNode);
+            });
+        }
+        return d.promise;
+    }
     };
     
-    if (getUser()) {
-        $rootScope.currentUser = getUser();
+    if (self.getUser()) {
+        $rootScope.currentUser = self.getUser();
+        self.getCurrentNode();
     }
     
-    return {
-        loginWithFacebook: loginWithFackbook,
-        login: login,
-        signup: signup,
-        logout: logout,
-        updateNotes: updateNotes,
-        updateStocks: updateStocks,
-        getUser: getUser
-    };
+    
+    
+    return self;
 })
 
 .factory('chartDataCacheService', function(CacheFactory) {

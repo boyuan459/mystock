@@ -5,7 +5,7 @@
       </ion-nav-back-button>
 
       <ion-nav-buttons side="left">
-        <button class="button button-icon button-clear ion-navicon" menu-toggle="left">
+        <button class="button button-icon button-clear ion-navicon" menu-toggle="left" ng-click="toggleLeftSideMenu()">
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
@@ -36,8 +36,21 @@
           <i class="ion-search"></i>&nbsp;Search
         </ion-item>
         <ion-item ng-show="currentUser" menu-close ng-click="logout()">
-          <i class="ion-log-out"></i>&nbsp;Logout
+            <i class="ion-log-out"></i>&nbsp;Logout
         </ion-item>
+
+        <div ng-show="currentUser" class="item item-divider text-center">
+            Your Favorite Chatroom
+        </div>
+
+        <ion-item ng-show="currentUser" ng-repeat="ticker in favs = (user.currentNode.favorites | sortByTicker)" menu-close ui-sref-active='active' ui-sref="app.chatroom({stockTicker: ticker})">
+            {{ ticker }}
+        </ion-item>
+        <div ng-show="currentUser" class="item  text-center" ng-hide="favs.length">
+            <p>
+                0 chatroom found
+            </p>
+        </div>
       </ion-list>
     </ion-content>
   </ion-side-menu>
