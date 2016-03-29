@@ -6,8 +6,9 @@ mod.constant('FIREBASE_URL', 'https://istocks.firebaseio.com/')
     
     return {
         encode: function(string) {
-            // console.log(string);
-            return encodeURIComponent(string).replace(/\"/g, "%22").replace(/\ /g, "%20").replace(/['()]/g, escape);
+            // console.log(encodeURIComponent(string));
+            // return encodeURIComponent(string);//this works also basically the same as following, what's the point of below
+            return encodeURIComponent(string).replace(/\"/g, "%22").replace(/\ /g, "%20").replace(/[!'()]/g, escape);
         }
     };
 })
