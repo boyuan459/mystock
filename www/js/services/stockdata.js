@@ -167,21 +167,25 @@ mod.factory('stockDataService', function($q, $http, encodeURIService, stockDetai
         */
         var deferred = $q.defer(),  
         cacheKey = ticker,
+        priceDataCache = stockPriceCacheService.get(cacheKey),
         url = "https://finance.yahoo.com/webservice/v1/symbols/" + ticker + "/quote?format=json&view=detail";
         
-        $http.get(url)
-        .success(function(json) {
-            // console.log(json);
-            var jsonData = json.list.resources[0].resource.fields;
-            
-            deferred.resolve(jsonData);
-            stockPriceCacheService.put(cacheKey, jsonData);
-        })
-        .error(function(err) {
-            console.log("Price data error: " + err);
-            deferred.reject();
-        });
-        
+        if (priceDataCache) {
+            deferred.resolve(priceDataCache);
+        } else {
+            $http.get(url)
+            .success(function(json) {
+                // console.log(json);
+                var jsonData = json.list.resources[0].resource.fields;
+                
+                deferred.resolve(jsonData);
+                stockPriceCacheService.put(cacheKey, jsonData);
+            })
+            .error(function(err) {
+                console.log("Price data error: " + err);
+                deferred.reject();
+            });
+        }
         return deferred.promise;
     };
     

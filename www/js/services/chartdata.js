@@ -1,5 +1,16 @@
 var mod = angular.module('mystock.services.chartdata', []);
 
+/**
+ * Day data object
+ * Adj_Close:"105.699997"
+   Close:"105.699997"
+   Date:"2016-04-01"
+   High:"105.790001"
+   Low:"102.470001"
+   Open:"102.93"
+   Symbol:"NFLX"
+   Volume:"14169500"
+ */
 mod.factory('chartDataService', function($q, $http, encodeURIService, chartDataCacheService) {
     
     var getHistoricalData = function(ticker, fromDate, toDate) {

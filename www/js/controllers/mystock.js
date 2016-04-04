@@ -221,6 +221,7 @@ mod.controller('MyStockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup
         yShowMaxMin: false,
         tooltips: false,
         showLegend: false,
+        useVoronoi: false,
         xShowMaxMin: false,
         xValue: xValueFunction,
         xAxisTickFormat: xTickFormat,
