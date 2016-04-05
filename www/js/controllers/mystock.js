@@ -173,6 +173,7 @@ mod.controller('MyStockCtrl', ['$scope', '$stateParams', '$window', '$ionicPopup
         var promise = newsService.getNews($scope.ticker);
         
         promise.then(function(data) {
+            // console.log(data);
             $scope.newsStories = data;
         });
     }
