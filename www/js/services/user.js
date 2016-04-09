@@ -18,7 +18,7 @@ mod.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPop
     },
     
     loginWithFacebook: function() {
-        console.log('Facebook login');
+        // console.log('Facebook login');
         var d = $q.defer();
         openFB.login(
             function (response) {
@@ -33,28 +33,28 @@ mod.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPop
                     // UNCOMMENT WHEN GOING THROUGH LECTURES
 								
                     var token = response.authResponse.accessToken;
-                    console.log('Token: ' + token);
+                    // console.log('Token: ' + token);
                     
                     openFB.api({
                         path: '/me',
                         params: {},
                         success: function (userData) {
-                            console.log('Got data from facebook about current user');
-                            console.log(userData);
-                            console.log(userData.name);
+                            // console.log('Got data from facebook about current user');
+                            // console.log(userData);
+                            // console.log(userData.name);
                             
                             //
                             // We got details of the current user now authenticate via firebase
                             //
                                        
-                            console.log('Authenticating with firebase');
+                            // console.log('Authenticating with firebase');
 
 
                             var auth = $firebaseAuth(firebaseRef);
                             auth.$authWithOAuthToken("facebook", token)
                                 .then(function (authData) {
-                                    console.log("Authentication success, logged in as:", authData.uid);
-                                    console.log(authData);
+                                    // console.log("Authentication success, logged in as:", authData.uid);
+                                    // console.log(authData);
                                     
                                     //
                                     // We've authenticated, now it's time to either get an existing user
@@ -107,7 +107,7 @@ mod.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPop
                                             
                                 })
                                 .catch(function (error) {
-                                    console.error("Authentication failed:", error);
+                                    // console.error("Authentication failed:", error);
                                     //
                                     // We've failed to authenticate, show the user an error message.
                                     //
@@ -120,7 +120,7 @@ mod.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPop
                                 
                         },
                         error: function (error) {
-                            console.error('Facebook error: ' + error.error_description);
+                            // console.error('Facebook error: ' + error.error_description);
                             //
                             // There was an error calling the facebook api to get details about the
                             // current user. Show the user an error message
@@ -134,7 +134,7 @@ mod.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPop
                     });
              
                 } else {
-                    console.error('Facebook login failed');
+                    // console.error('Facebook login failed');
                     //
                     // There was an error authenticating with facebook
                     // Show the user an error message
