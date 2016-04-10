@@ -1,6 +1,6 @@
 var mod = angular.module('mystock.services.user', []);
 
-mod.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPopup, $firebaseAuth, $firebaseObject, $state, firebaseRef, firebaseUserRef, modalService, myStocksArrayService, notesCacheService, myStocksCacheService) {
+mod.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPopup, $firebaseAuth, $firebaseObject, $state, $ionicAnalytics, firebaseRef, firebaseUserRef, modalService, myStocksArrayService, notesCacheService, myStocksCacheService) {
     
     var self = {
     current: {},
@@ -11,8 +11,10 @@ mod.factory('userService', function($rootScope, $window, $timeout, $q, $ionicPop
         }
         if (self.currentNode.favorites[ticker]) {
             self.currentNode.favorites[ticker] = null;
+            // $ionicAnalytics.track('Unfavorite Stock', ticker);
         } else {
             self.currentNode.favorites[ticker] = ticker;
+            // $ionicAnalytics.track('Favorite Stock', ticker);
         }
         self.currentNode.$save();
     },
